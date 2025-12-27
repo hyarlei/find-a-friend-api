@@ -3,3 +3,11 @@ node_modules
 .env
 
 /src/generated/prisma
+
+build
+dist
+npm-debug.log
+.idea
+.vscode
+coverage
+.docker
