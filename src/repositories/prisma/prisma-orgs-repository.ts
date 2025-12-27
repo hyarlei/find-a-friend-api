@@ -1,6 +1,6 @@
-import { prisma } from "@/lib/prisma";
-import { Prisma } from "@prisma/client";
-import { OrgsRepository } from "../orgs-repository";
+import { prisma } from "@/lib/prisma"
+import { Prisma } from "@prisma/client"
+import { OrgsRepository } from "../orgs-repository"
 
 // Essa classe segue a risca o contrato (implements OrgsRepository)
 export class PrismaOrgsRepository implements OrgsRepository {
@@ -9,16 +9,16 @@ export class PrismaOrgsRepository implements OrgsRepository {
       where: {
         email,
       },
-    });
+    })
 
-    return org;
+    return org
   }
 
   async create(data: Prisma.OrgCreateInput) {
     const org = await prisma.org.create({
       data,
-    });
+    })
 
-    return org;
+    return org
   }
 }

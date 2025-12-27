@@ -1,6 +1,6 @@
-import { Pet, Prisma } from '@prisma/client'
-import { FindAllParams, PetsRepository } from '../pets-repository'
-import { randomUUID } from 'node:crypto'
+import { Pet, Prisma } from "@prisma/client"
+import { randomUUID } from "node:crypto"
+import { FindAllParams, PetsRepository } from "../pets-repository"
 
 export class InMemoryPetsRepository implements PetsRepository {
   public items: Pet[] = []
@@ -39,8 +39,9 @@ export class InMemoryPetsRepository implements PetsRepository {
     const pets = this.items.filter((item) => {
       if (params.age && item.age !== params.age) return false
       if (params.size && item.size !== params.size) return false
-      if (params.energy_level && item.energy_level !== params.energy_level) return false
-      
+      if (params.energy_level && item.energy_level !== params.energy_level)
+        return false
+
       return true
     })
 
