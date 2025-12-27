@@ -1,0 +1,16 @@
+version: "3"
+
+services:
+  find-a-friend-db:
+    image: postgres:15-alpine # Versão leve do Postgres
+    ports:
+      - "5432:5432" # Porta PC : Porta Container
+    environment:
+      - POSTGRES_USER=docker
+      - POSTGRES_PASSWORD=docker
+      - POSTGRES_DB=findafriend
+    volumes:
+      - pgdata:/var/lib/postgresql/data # Salva os dados mesmo se desligar
+
+volumes:
+  pgdata:
