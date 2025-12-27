@@ -2,6 +2,7 @@ import { FastifyInstance } from "fastify"
 import { ZodTypeProvider } from "fastify-type-provider-zod"
 import z from "zod"
 import { authenticate } from "./controllers/authenticate"
+import { createPet } from "./controllers/create-pet"
 import { getPetProfile } from "./controllers/get-pet-profile"
 import { register } from "./controllers/register"
 import { searchPets } from "./controllers/search-pets"
@@ -51,6 +52,30 @@ export async function appRoutes(app: FastifyInstance) {
   )
 
   typedApp.post(
+    "/orgs/pets",
+    {
+      schema: {
+        tags: ["PETS"],
+        summary: "Create a new Pet (Requires Auth)",
+        security: [{ bearerAuth: [] }],
+        body: z.object({
+          name: z.string(),
+          about: z.string().nullable(),
+          age: z.string(),
+          size: z.string(),
+          energy_level: z.string(),
+          independence_level: z.string(),
+          environment: z.string(),
+        }),
+        response: {
+          201: z.null(),
+        },
+      },
+    },
+    createPet,
+  )
+
+  typedApp.get(
     "/pets",
     {
       schema: {
@@ -71,6 +96,8 @@ export async function appRoutes(app: FastifyInstance) {
                 age: z.string(),
                 size: z.string(),
                 energy_level: z.string(),
+                about: z.string().nullable().optional(),
+                city: z.string().optional(),
               }),
             ),
           }),
@@ -79,6 +106,33 @@ export async function appRoutes(app: FastifyInstance) {
     },
     searchPets,
   )
-  typedApp.get("/pets/:id", getPetProfile)
-  typedApp.get("/pets", searchPets)
+
+  typedApp.get(
+    "/pets/:id",
+    {
+      schema: {
+        tags: ["PETS"],
+        summary: "Get Pet Profile",
+        params: z.object({
+          id: z.string().uuid(),
+        }),
+        response: {
+          200: z.object({
+            pet: z.object({
+              id: z.string().uuid(),
+              name: z.string(),
+              about: z.string().nullable(),
+              age: z.string(),
+              size: z.string(),
+              energy_level: z.string(),
+              independence_level: z.string(),
+              environment: z.string(),
+              org_id: z.string(),
+            }),
+          }),
+        },
+      },
+    },
+    getPetProfile,
+  )
 }
